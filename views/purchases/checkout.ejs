@@ -1,0 +1,13 @@
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <h1>Checkout</h1>
+  <% if (ticket) { %>
+    <p>Ticket: <%= ticket.name %></p>
+  <% } else { %>
+    <p>Ticket not found.</p>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

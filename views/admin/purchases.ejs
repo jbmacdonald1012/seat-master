@@ -1,0 +1,17 @@
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <h1>Manage Purchases</h1>
+  <% if (purchases.length === 0) { %>
+    <p>No purchases.</p>
+  <% } else { %>
+    <ul>
+      <% purchases.forEach(p => { %>
+        <li>Purchase #<%= p.id %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

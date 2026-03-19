@@ -1,0 +1,17 @@
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <h1>Contact Messages</h1>
+  <% if (messages.length === 0) { %>
+    <p>No messages.</p>
+  <% } else { %>
+    <ul>
+      <% messages.forEach(m => { %>
+        <li><strong><%= m.name %></strong>: <%= m.message %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

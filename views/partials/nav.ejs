@@ -1,0 +1,17 @@
+<nav>
+  <a href="/">Seat Master</a>
+  <ul>
+    <li><a href="/events">Events</a></li>
+    <li><a href="/contact">Contact</a></li>
+    <% if (user) { %>
+      <li><a href="/dashboard">My Dashboard</a></li>
+      <% if (user.role === 'admin' || user.role === 'employee') { %>
+        <li><a href="/admin">Admin</a></li>
+      <% } %>
+      <li><a href="/auth/logout">Logout (<%= user.firstname %>)</a></li>
+    <% } else { %>
+      <li><a href="/auth/login">Login</a></li>
+      <li><a href="/auth/register">Register</a></li>
+    <% } %>
+  </ul>
+</nav>

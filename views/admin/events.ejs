@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <h1>Manage Events</h1>
+  <a href="/admin/events/new">New Event</a>
+  <% if (events.length === 0) { %>
+    <p>No events.</p>
+  <% } else { %>
+    <ul>
+      <% events.forEach(e => { %>
+        <li><%= e.name %> <a href="/admin/events/<%= e.id %>/edit">Edit</a></li>
+      <% }) %>
+    </ul>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

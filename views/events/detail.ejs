@@ -1,0 +1,12 @@
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <% if (event) { %>
+    <h1><%= event.name %></h1>
+  <% } else { %>
+    <p>Event not found.</p>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

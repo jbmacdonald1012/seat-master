@@ -1,0 +1,17 @@
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <h1>Register</h1>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <form method="POST" action="/auth/register">
+    <label>First Name <input type="text" name="firstname" required /></label>
+    <label>Last Name <input type="text" name="lastname" required /></label>
+    <label>Email <input type="email" name="email" required /></label>
+    <label>Password <input type="password" name="password" required /></label>
+    <button type="submit">Register</button>
+  </form>
+  <p>Already have an account? <a href="/auth/login">Login</a></p>
+</main>
+
+<%- include('../partials/footer') %>

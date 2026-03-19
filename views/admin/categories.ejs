@@ -1,0 +1,17 @@
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <h1>Manage Categories</h1>
+  <% if (categories.length === 0) { %>
+    <p>No categories.</p>
+  <% } else { %>
+    <ul>
+      <% categories.forEach(c => { %>
+        <li><%= c.name %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

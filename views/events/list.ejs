@@ -1,0 +1,17 @@
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <h1>Events</h1>
+  <% if (events.length === 0) { %>
+    <p>No events available.</p>
+  <% } else { %>
+    <ul>
+      <% events.forEach(event => { %>
+        <li><a href="/events/<%= event.id %>"><%= event.name %></a></li>
+      <% }) %>
+    </ul>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

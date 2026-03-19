@@ -1,0 +1,13 @@
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <h1>Purchase Detail</h1>
+  <% if (purchase) { %>
+    <p>Purchase ID: <%= purchase.id %></p>
+  <% } else { %>
+    <p>Purchase not found.</p>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,12 @@
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <h1><%= event ? 'Edit Event' : 'New Event' %></h1>
+  <form method="POST" action="/admin/events<%= event ? '/' + event.id : '' %>">
+    <label>Name <input type="text" name="name" value="<%= event ? event.name : '' %>" required /></label>
+    <button type="submit"><%= event ? 'Update' : 'Create' %></button>
+  </form>
+</main>
+
+<%- include('../partials/footer') %>
