@@ -1,0 +1,30 @@
+{
+  "name": "seat-master",
+  "version": "1.0.0",
+  "description": "Event ticketing platform",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon"
+  },
+  "keywords": [
+    "tickets",
+    "events",
+    "booking"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "pg": "^8.20.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["bcrypt"]
+  }
+}
