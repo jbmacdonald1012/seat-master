@@ -32,6 +32,13 @@ app.use(express.urlencoded({ extended: true }));
 // Session
 app.use(sessionMiddleware);
 
+// Make NODE_ENV available to all EJS templates
+const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
+app.use((req, res, next) => {
+  res.locals.NODE_ENV = NODE_ENV;
+  next();
+});
+
 // Routes
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
@@ -49,5 +56,18 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Seat Master running on http://localhost:${PORT}`);
 });
+
+// WebSocket server for dev-mode live reload
+if (NODE_ENV.includes('dev')) {
+  const ws = await import('ws');
+  const wsPort = parseInt(PORT) + 1;
+  const wsServer = new ws.WebSocketServer({ port: wsPort });
+  wsServer.on('listening', () => {
+    console.log(`WebSocket server running on port ${wsPort}`);
+  });
+  wsServer.on('error', (err) => {
+    console.error('WebSocket server error:', err);
+  });
+}
 
 export default app;
