@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import * as eventController from '../controllers/eventController.js';
+import eventController from '../controllers/eventController.js';
 
 const router = Router();
 
-router.get('/', eventController.list);
-router.get('/:id', eventController.detail);
+router.get('/', eventController.listEvents);
+router.get('/category/:slug', eventController.eventsByCategory);
+router.get('/:id', eventController.viewEvent);
 
 export default router;
