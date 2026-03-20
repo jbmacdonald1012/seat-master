@@ -3,7 +3,11 @@
 
 <main>
   <h1>Contact Us</h1>
-  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <% if (errors && errors.length > 0) { %>
+    <ul class="errors">
+      <% errors.forEach(e => { %><li><%= e %></li><% }) %>
+    </ul>
+  <% } %>
   <form method="POST" action="/contact">
     <label>Name <input type="text" name="name" required /></label>
     <label>Email <input type="email" name="email" required /></label>

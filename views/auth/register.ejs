@@ -3,7 +3,11 @@
 
 <main>
   <h1>Register</h1>
-  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <% if (errors && errors.length > 0) { %>
+    <ul class="errors">
+      <% errors.forEach(e => { %><li><%= e %></li><% }) %>
+    </ul>
+  <% } %>
   <form method="POST" action="/auth/register">
     <label>First Name <input type="text" name="firstname" required /></label>
     <label>Last Name <input type="text" name="lastname" required /></label>

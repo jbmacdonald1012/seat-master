@@ -2,8 +2,8 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
-import sessionMiddleware from './middleware/session.js';
-import errorHandler from './middleware/errorHandler.js';
+import sessionMiddleware, { loadUser } from './middleware/session.js';
+import { globalErrorHandler, notFoundHandler } from './middleware/errorHandler.js';
 
 import indexRouter from './routes/index.js';
 import authRouter from './routes/auth.js';
@@ -31,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Session
 app.use(sessionMiddleware);
+app.use(loadUser);
 
 // Make NODE_ENV available to all EJS templates
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -50,8 +51,9 @@ app.use('/admin', adminRouter);
 app.use('/contact', contactRouter);
 app.use('/api', apiRouter);
 
-// Error handler (must be last)
-app.use(errorHandler);
+// 404 and error handlers (must be last)
+app.use(notFoundHandler);
+app.use(globalErrorHandler);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
