@@ -39,6 +39,7 @@ app.use((req, res, next) => {
   next();
 });
 
+
 // Routes
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
