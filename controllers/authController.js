@@ -40,7 +40,8 @@ const authController = {
       req.session.userRole = newUser.role;
       req.session.user = newUser;
 
-      res.redirect('/dashboard');
+      const redirectTo = ['admin', 'employee'].includes(newUser.role) ? '/admin' : '/dashboard';
+      res.redirect(redirectTo);
     } catch (error) {
       next(error);
     }
@@ -87,7 +88,8 @@ const authController = {
         role: user.role,
       };
 
-      const returnTo = req.session.returnTo || '/dashboard';
+      const defaultRedirect = ['admin', 'employee'].includes(user.role) ? '/admin' : '/dashboard';
+      const returnTo = req.session.returnTo || defaultRedirect;
       delete req.session.returnTo;
       res.redirect(returnTo);
     } catch (error) {

@@ -33,10 +33,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(sessionMiddleware);
 app.use(loadUser);
 
-// Make NODE_ENV available to all EJS templates
+// Make NODE_ENV and auth state available to all EJS templates
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 app.use((req, res, next) => {
   res.locals.NODE_ENV = NODE_ENV;
+  res.locals.isAuthenticated = !!req.session?.user;
   next();
 });
 
