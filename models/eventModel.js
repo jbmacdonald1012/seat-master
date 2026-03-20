@@ -102,9 +102,9 @@ const eventModel = {
       INSERT INTO events (
         title, description, category_id, venue_name, venue_address,
         city, state, event_date, image_url, total_tickets,
-        available_tickets, base_price, is_featured
+        available_tickets, base_price, cost_per_ticket, is_featured
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
       RETURNING *
     `;
     const values = [
@@ -120,6 +120,7 @@ const eventModel = {
       eventData.total_tickets,
       eventData.available_tickets,
       eventData.base_price,
+      eventData.cost_per_ticket || 0,
       eventData.is_featured || false,
     ];
     const result = await pool.query(query, values);
@@ -131,9 +132,10 @@ const eventModel = {
       UPDATE events
       SET title = $1, description = $2, category_id = $3, venue_name = $4,
           venue_address = $5, city = $6, state = $7, event_date = $8,
-          image_url = $9, base_price = $10, is_featured = $11, is_active = $12,
+          image_url = $9, base_price = $10, cost_per_ticket = $11,
+          is_featured = $12, is_active = $13,
           updated_at = CURRENT_TIMESTAMP
-      WHERE id = $13
+      WHERE id = $14
       RETURNING *
     `;
     const values = [
@@ -147,6 +149,7 @@ const eventModel = {
       eventData.event_date,
       eventData.image_url,
       eventData.base_price,
+      eventData.cost_per_ticket || 0,
       eventData.is_featured,
       eventData.is_active,
       id,

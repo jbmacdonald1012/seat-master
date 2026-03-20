@@ -52,7 +52,9 @@ const purchaseModel = {
     const query = `
       SELECT p.*,
              u.username, u.email, u.full_name,
-             e.title as event_title, e.venue_name, e.event_date
+             e.title as event_title, e.venue_name, e.event_date,
+             e.cost_per_ticket,
+             (p.quantity * e.cost_per_ticket) AS purchase_cost
       FROM purchases p
       JOIN users u ON p.user_id = u.id
       LEFT JOIN events e ON p.event_id = e.id
@@ -76,10 +78,13 @@ const purchaseModel = {
   async getStats() {
     const query = `
       SELECT
-        COUNT(*) as total_count,
-        COUNT(*) FILTER (WHERE status = 'completed') as completed_count,
-        COALESCE(SUM(total_price) FILTER (WHERE status = 'completed'), 0) as total_revenue
-      FROM purchases
+        COUNT(*) as total_purchases,
+        COUNT(*) FILTER (WHERE p.status = 'completed') as completed_count,
+        COALESCE(SUM(p.total_price) FILTER (WHERE p.status = 'completed'), 0) as total_sales,
+        COALESCE(SUM(p.quantity * e.cost_per_ticket) FILTER (WHERE p.status = 'completed'), 0) as total_cost,
+        COALESCE(SUM(p.total_price - (p.quantity * e.cost_per_ticket)) FILTER (WHERE p.status = 'completed'), 0) as total_revenue
+      FROM purchases p
+      LEFT JOIN events e ON p.event_id = e.id
     `;
     const result = await pool.query(query);
     return result.rows[0];

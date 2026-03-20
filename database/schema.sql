@@ -1,6 +1,16 @@
 -- Seat Master Database Schema
 -- Run this in WebStorm DB console before seeding
 
+-- Drop all tables (reverse dependency order)
+DROP TABLE IF EXISTS contact_messages CASCADE;
+DROP TABLE IF EXISTS ratings CASCADE;
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS purchases CASCADE;
+DROP TABLE IF EXISTS tickets CASCADE;
+DROP TABLE IF EXISTS events CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
 -- 1. Users
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -43,6 +53,7 @@ CREATE TABLE events (
     total_tickets INTEGER NOT NULL DEFAULT 0,
     available_tickets INTEGER NOT NULL DEFAULT 0,
     base_price DECIMAL(10, 2) NOT NULL,
+    cost_per_ticket DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
     is_featured BOOLEAN DEFAULT FALSE,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

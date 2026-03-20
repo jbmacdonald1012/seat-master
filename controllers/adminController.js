@@ -82,6 +82,7 @@ const adminController = {
         total_tickets: req.body.total_tickets || 0,
         available_tickets: req.body.total_tickets || 0,
         base_price: req.body.base_price,
+        cost_per_ticket: req.body.cost_per_ticket || 0,
         is_featured: req.body.is_featured === 'on',
       };
 
@@ -144,6 +145,7 @@ const adminController = {
         event_date: req.body.event_date,
         image_url: req.body.image_url,
         base_price: req.body.base_price,
+        cost_per_ticket: req.body.cost_per_ticket || 0,
         is_featured: req.body.is_featured === 'on',
         is_active: req.body.is_active === 'on',
       };
