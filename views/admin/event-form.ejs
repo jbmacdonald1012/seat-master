@@ -2,11 +2,187 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1><%= event ? 'Edit Event' : 'New Event' %></h1>
-  <form method="POST" action="/admin/events<%= event ? '/' + event.id : '' %>">
-    <label>Name <input type="text" name="name" value="<%= event ? event.name : '' %>" required /></label>
-    <button type="submit"><%= event ? 'Update' : 'Create' %></button>
-  </form>
+    <section class="page-header">
+        <div class="container">
+            <a href="/admin/events" class="admin-back-link">
+                <i class="fas fa-arrow-left"></i> Manage Events
+            </a>
+            <h1><%= event ? 'Edit Event' : 'New Event' %></h1>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="container">
+            <div class="content-box">
+                <% if (errors && errors.length > 0) { %>
+                    <div class="alert alert-error">
+                        <ul>
+                            <% errors.forEach(error => { %>
+                                <li><%= error %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+
+                <form action="/admin/events<%= event ? '/' + event.id : '' %>" method="POST" class="auth-form">
+                    <div class="form-group">
+                        <label for="title">Event Title</label>
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            value="<%= event ? event.title : '' %>"
+                            required
+                            class="form-control"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category_id">Category</label>
+                        <select id="category_id" name="category_id" required class="form-control">
+                            <option value="">Select a category</option>
+                            <% categories.forEach(cat => { %>
+                                <option value="<%= cat.id %>" <%= event && event.category_id === cat.id ? 'selected' : '' %>>
+                                    <%= cat.name %>
+                                </option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            rows="4"
+                            required
+                            class="form-control"
+                        ><%= event ? event.description : '' %></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="event_date">Event Date & Time</label>
+                        <input
+                            type="datetime-local"
+                            id="event_date"
+                            name="event_date"
+                            value="<%= event ? new Date(event.event_date).toISOString().slice(0,16) : '' %>"
+                            required
+                            class="form-control"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="venue_name">Venue Name</label>
+                        <input
+                            type="text"
+                            id="venue_name"
+                            name="venue_name"
+                            value="<%= event ? event.venue_name : '' %>"
+                            required
+                            class="form-control"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="venue_address">Venue Address</label>
+                        <input
+                            type="text"
+                            id="venue_address"
+                            name="venue_address"
+                            value="<%= event ? event.venue_address : '' %>"
+                            class="form-control"
+                        >
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input
+                                type="text"
+                                id="city"
+                                name="city"
+                                value="<%= event ? event.city : '' %>"
+                                class="form-control"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input
+                                type="text"
+                                id="state"
+                                name="state"
+                                value="<%= event ? event.state : '' %>"
+                                class="form-control"
+                            >
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="base_price">Sale Price ($)</label>
+                            <input
+                                type="number"
+                                id="base_price"
+                                name="base_price"
+                                value="<%= event ? event.base_price : '' %>"
+                                min="0"
+                                step="0.01"
+                                required
+                                class="form-control"
+                            >
+                            <small>Price charged to customers</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="cost_per_ticket">Cost Per Ticket ($)</label>
+                            <input
+                                type="number"
+                                id="cost_per_ticket"
+                                name="cost_per_ticket"
+                                value="<%= event ? event.cost_per_ticket : '' %>"
+                                min="0"
+                                step="0.01"
+                                required
+                                class="form-control"
+                            >
+                            <small>Platform's acquisition cost</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="total_tickets">Total Tickets</label>
+                            <input
+                                type="number"
+                                id="total_tickets"
+                                name="total_tickets"
+                                value="<%= event ? event.total_tickets : '' %>"
+                                min="1"
+                                required
+                                class="form-control"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image_url">Image URL</label>
+                        <input
+                            type="url"
+                            id="image_url"
+                            name="image_url"
+                            value="<%= event ? event.image_url || '' : '' %>"
+                            class="form-control"
+                            placeholder="https://..."
+                        >
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                        <button type="submit" class="btn btn-primary">
+                            <%= event ? 'Update Event' : 'Create Event' %>
+                        </button>
+                        <a href="/admin/events" class="btn" style="background: #666;">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

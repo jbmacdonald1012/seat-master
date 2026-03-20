@@ -2,12 +2,89 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1>Checkout</h1>
-  <% if (ticket) { %>
-    <p>Ticket: <%= ticket.name %></p>
-  <% } else { %>
-    <p>Ticket not found.</p>
-  <% } %>
+    <section class="page-header">
+        <div class="container">
+            <h1>Checkout</h1>
+            <p>Review your tickets before confirming</p>
+        </div>
+    </section>
+
+    <section class="checkout-section">
+        <div class="container">
+            <div class="checkout-layout">
+                <!-- Event Summary -->
+                <div class="checkout-event">
+                    <h2><%= event.title %></h2>
+                    <p class="event-venue">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <%= event.venue_name %>
+                    </p>
+                    <p class="event-date">
+                        <i class="fas fa-calendar"></i>
+                        <%= new Date(event.event_date).toLocaleDateString('en-US', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }) %>
+                    </p>
+                </div>
+
+                <!-- Ticket List -->
+                <div class="checkout-tickets">
+                    <h3>Selected Tickets</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Row</th>
+                                <th>Seat</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% tickets.forEach(ticket => { %>
+                                <tr>
+                                    <td><%= ticket.section %></td>
+                                    <td><%= ticket.row_number %></td>
+                                    <td><%= ticket.seat_number %></td>
+                                    <td>$<%= parseFloat(ticket.price).toFixed(2) %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Tickets (<%= tickets.length %>)</span>
+                        <span>$<%= parseFloat(total).toFixed(2) %></span>
+                    </div>
+                    <div class="summary-row total">
+                        <strong>Total</strong>
+                        <strong>$<%= parseFloat(total).toFixed(2) %></strong>
+                    </div>
+
+                    <form action="/purchases" method="POST" class="checkout-form">
+                        <input type="hidden" name="event_id" value="<%= event.id %>">
+                        <input type="hidden" name="ticket_ids" value="<%= tickets.map(t => t.id).join(',') %>">
+                        <input type="hidden" name="total" value="<%= total %>">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-lock"></i> Confirm Purchase
+                        </button>
+                    </form>
+
+                    <a href="/events/<%= event.id %>" class="btn btn-block" style="margin-top: 0.5rem; background: #666;">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

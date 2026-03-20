@@ -2,9 +2,124 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1>Welcome to Seat Master</h1>
-  <p>Browse and purchase tickets for concerts, sports, comedy shows, and theater performances.</p>
-  <a href="/events">Browse Events</a>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Find Your Next Experience</h1>
+            <p>Discover amazing events near you</p>
+
+            <form action="/events" method="GET" class="search-form">
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search for events, artists, or venues..."
+                    class="search-input"
+                >
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+
+            <div class="category-pills">
+                <% categories.forEach(category => { %>
+                    <a href="/events/category/<%= category.slug %>" class="pill">
+                        <%= category.name %>
+                    </a>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Events -->
+    <section class="featured-events">
+        <div class="container">
+            <h2>Featured Events</h2>
+
+            <% if (featuredEvents.length === 0) { %>
+                <p class="no-events">No featured events at this time. Check back soon!</p>
+            <% } else { %>
+                <div class="event-grid">
+                    <% featuredEvents.forEach(event => { %>
+                        <div class="event-card">
+                            <div class="event-image">
+                                <img src="<%= event.image_url || '/images/default-event.jpg' %>"
+                                     alt="<%= event.title %>">
+                                <span class="event-category"><%= event.category_name %></span>
+                            </div>
+                            <div class="event-info">
+                                <h3><%= event.title %></h3>
+                                <p class="event-venue">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <%= event.venue_name %>
+                                </p>
+                                <p class="event-date">
+                                    <i class="fas fa-calendar"></i>
+                                    <%= new Date(event.event_date).toLocaleDateString('en-US', {
+                                        weekday: 'short',
+                                        year: 'numeric',
+                                        month: 'short',
+                                        day: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    }) %>
+                                </p>
+                                <div class="event-footer">
+                                    <div class="event-rating">
+                                        <% if (event.rating_count > 0) { %>
+                                            <i class="fas fa-star"></i>
+                                            <%= parseFloat(event.avg_rating).toFixed(1) %>
+                                            (<%= event.rating_count %>)
+                                        <% } else { %>
+                                            <span class="no-rating">No ratings yet</span>
+                                        <% } %>
+                                    </div>
+                                    <div class="event-price">
+                                        From $<%= parseFloat(event.base_price).toFixed(2) %>
+                                    </div>
+                                </div>
+                                <a href="/events/<%= event.id %>" class="btn btn-block btn-primary">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+
+            <div class="text-center" style="margin-top: 2rem;">
+                <a href="/events" class="btn btn-outline-primary">View All Events</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose Seat Master?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure Booking</h3>
+                    <p>Your tickets are safe with our secure payment processing</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-ticket-alt"></i>
+                    <h3>Best Selection</h3>
+                    <p>Access to thousands of events across all categories</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>24/7 Support</h3>
+                    <p>Our support team is always here to help you</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Mobile Tickets</h3>
+                    <p>Access your tickets anytime, anywhere on your device</p>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

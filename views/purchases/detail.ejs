@@ -2,12 +2,75 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1>Purchase Detail</h1>
-  <% if (purchase) { %>
-    <p>Purchase ID: <%= purchase.id %></p>
-  <% } else { %>
-    <p>Purchase not found.</p>
-  <% } %>
+    <section class="page-header">
+        <div class="container">
+            <h1>Purchase Confirmation</h1>
+            <p>Thank you for your purchase!</p>
+        </div>
+    </section>
+
+    <section class="purchase-detail-section">
+        <div class="container">
+            <div class="content-box">
+                <div class="purchase-status">
+                    <span class="status-badge status-<%= purchase.status %>">
+                        <%= purchase.status.charAt(0).toUpperCase() + purchase.status.slice(1) %>
+                    </span>
+                    <p class="text-muted">Order #<%= purchase.id %> &bull; Placed <%= new Date(purchase.purchase_date).toLocaleDateString() %></p>
+                </div>
+
+                <h2><%= purchase.event_title %></h2>
+                <p class="event-venue">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <%= purchase.venue_name %>
+                </p>
+                <p class="event-date">
+                    <i class="fas fa-calendar"></i>
+                    <%= new Date(purchase.event_date).toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }) %>
+                </p>
+
+                <% if (purchase.tickets && purchase.tickets.length > 0) { %>
+                    <h3 style="margin-top: 1.5rem;">Your Tickets</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Row</th>
+                                <th>Seat</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% purchase.tickets.forEach(ticket => { %>
+                                <tr>
+                                    <td><%= ticket.section %></td>
+                                    <td><%= ticket.row_number %></td>
+                                    <td><%= ticket.seat_number %></td>
+                                    <td>$<%= parseFloat(ticket.price).toFixed(2) %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } %>
+
+                <div class="order-total" style="margin-top: 1rem; text-align: right;">
+                    <strong>Total: $<%= parseFloat(purchase.total_price).toFixed(2) %></strong>
+                </div>
+
+                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                    <a href="/dashboard" class="btn btn-primary">My Dashboard</a>
+                    <a href="/events" class="btn btn-outline-primary">Browse More Events</a>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

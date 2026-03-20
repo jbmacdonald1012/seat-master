@@ -2,14 +2,53 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1>Login</h1>
-  <% if (error) { %><p class="error"><%= error %></p><% } %>
-  <form method="POST" action="/auth/login">
-    <label>Email <input type="email" name="email" required /></label>
-    <label>Password <input type="password" name="password" required /></label>
-    <button type="submit">Login</button>
-  </form>
-  <p>No account? <a href="/auth/register">Register</a></p>
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-box">
+                <h1>Login to Seat Master</h1>
+
+                <% if (error) { %>
+                    <div class="alert alert-error">
+                        <%= error %>
+                    </div>
+                <% } %>
+
+                <form action="/auth/login" method="POST" class="auth-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                            autofocus
+                            class="form-control"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                            class="form-control"
+                        >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Login
+                    </button>
+                </form>
+
+                <p class="auth-footer">
+                    Don't have an account?
+                    <a href="/auth/register">Sign up here</a>
+                </p>
+            </div>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

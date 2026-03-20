@@ -2,16 +2,72 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1>Manage Purchases</h1>
-  <% if (purchases.length === 0) { %>
-    <p>No purchases.</p>
-  <% } else { %>
-    <ul>
-      <% purchases.forEach(p => { %>
-        <li>Purchase #<%= p.id %></li>
-      <% }) %>
-    </ul>
-  <% } %>
+    <section class="page-header">
+        <div class="container">
+            <a href="/admin" class="admin-back-link">
+                <i class="fas fa-arrow-left"></i> Admin Dashboard
+            </a>
+            <h1>Manage Purchases</h1>
+            <p>Review and update purchase status</p>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="container">
+            <!-- Status Filter -->
+            <div class="filter-tabs">
+                <a href="/admin/purchases" class="btn <%= !selectedStatus ? 'btn-primary' : 'btn-outline-primary' %>">All</a>
+                <a href="/admin/purchases?status=pending" class="btn <%= selectedStatus === 'pending' ? 'btn-primary' : 'btn-outline-primary' %>">Pending</a>
+                <a href="/admin/purchases?status=confirmed" class="btn <%= selectedStatus === 'confirmed' ? 'btn-primary' : 'btn-outline-primary' %>">Confirmed</a>
+                <a href="/admin/purchases?status=cancelled" class="btn <%= selectedStatus === 'cancelled' ? 'btn-primary' : 'btn-outline-primary' %>">Cancelled</a>
+            </div>
+
+            <% if (purchases.length === 0) { %>
+                <div class="no-results">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>No purchases found</h3>
+                </div>
+            <% } else { %>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>User</th>
+                            <th>Event</th>
+                            <th>Tickets</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% purchases.forEach(p => { %>
+                            <tr>
+                                <td>#<%= p.id %></td>
+                                <td><%= p.username %></td>
+                                <td><%= p.event_title %></td>
+                                <td><%= p.quantity %></td>
+                                <td>$<%= parseFloat(p.total_price).toFixed(2) %></td>
+                                <td><span class="status-badge status-<%= p.status %>"><%= p.status %></span></td>
+                                <td><%= new Date(p.purchase_date).toLocaleDateString() %></td>
+                                <td>
+                                    <% if (p.status === 'pending') { %>
+                                        <form action="/admin/purchases/<%= p.id %>/confirm" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn-text">Confirm</button>
+                                        </form>
+                                        <form action="/admin/purchases/<%= p.id %>/cancel" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn-text text-danger">Cancel</button>
+                                        </form>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

@@ -2,17 +2,66 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1>Manage Events</h1>
-  <a href="/admin/events/new">New Event</a>
-  <% if (events.length === 0) { %>
-    <p>No events.</p>
-  <% } else { %>
-    <ul>
-      <% events.forEach(e => { %>
-        <li><%= e.name %> <a href="/admin/events/<%= e.id %>/edit">Edit</a></li>
-      <% }) %>
-    </ul>
-  <% } %>
+    <section class="page-header">
+        <div class="container">
+            <a href="/admin" class="admin-back-link">
+                <i class="fas fa-arrow-left"></i> Admin Dashboard
+            </a>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>Manage Events</h1>
+                    <p>Create, edit, and delete events</p>
+                </div>
+                <a href="/admin/events/new" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> New Event
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="container">
+            <% if (events.length === 0) { %>
+                <div class="no-results">
+                    <i class="fas fa-calendar"></i>
+                    <h3>No events yet</h3>
+                    <a href="/admin/events/new" class="btn btn-primary">Create First Event</a>
+                </div>
+            <% } else { %>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th>Venue</th>
+                            <th>Tickets</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% events.forEach(event => { %>
+                            <tr>
+                                <td><strong><%= event.title %></strong></td>
+                                <td><%= event.category_name %></td>
+                                <td><%= new Date(event.event_date).toLocaleDateString() %></td>
+                                <td><%= event.venue_name %></td>
+                                <td><%= event.available_tickets %> / <%= event.total_tickets %></td>
+                                <td>$<%= parseFloat(event.base_price).toFixed(2) %></td>
+                                <td>
+                                    <a href="/admin/events/<%= event.id %>/edit" class="btn-text">Edit</a>
+                                    <form action="/admin/events/<%= event.id %>/delete" method="POST" style="display:inline;" onsubmit="return confirm('Delete this event?')">
+                                        <button type="submit" class="btn-text text-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

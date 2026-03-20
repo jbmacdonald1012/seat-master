@@ -2,14 +2,154 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1>Admin Dashboard</h1>
-  <ul>
-    <li><a href="/admin/events">Manage Events</a></li>
-    <li><a href="/admin/categories">Manage Categories</a></li>
-    <li><a href="/admin/purchases">Manage Purchases</a></li>
-    <li><a href="/admin/users">Manage Users</a></li>
-    <li><a href="/admin/contacts">Contact Messages</a></li>
-  </ul>
+    <section class="page-header">
+        <div class="container">
+            <h1>Admin Dashboard</h1>
+            <p>Manage your Seat Master platform</p>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="container">
+            <!-- Quick Nav -->
+            <div class="admin-nav-grid">
+                <a href="/admin/events" class="admin-nav-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Events</span>
+                </a>
+                <a href="/admin/categories" class="admin-nav-card">
+                    <i class="fas fa-tags"></i>
+                    <span>Categories</span>
+                </a>
+                <a href="/admin/purchases" class="admin-nav-card">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Purchases</span>
+                </a>
+                <a href="/admin/users" class="admin-nav-card">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
+                </a>
+                <a href="/admin/contacts" class="admin-nav-card">
+                    <i class="fas fa-envelope"></i>
+                    <span>Messages</span>
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <% if (stats) { %>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-dollar-sign"></i>
+                        <div>
+                            <h3>$<%= parseFloat(stats.total_sales || 0).toFixed(2) %></h3>
+                            <p>Total Sales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-receipt"></i>
+                        <div>
+                            <h3>$<%= parseFloat(stats.total_cost || 0).toFixed(2) %></h3>
+                            <p>Total Cost</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <h3>$<%= parseFloat(stats.total_revenue || 0).toFixed(2) %></h3>
+                            <p>Net Revenue</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-shopping-cart"></i>
+                        <div>
+                            <h3><%= stats.total_purchases || 0 %></h3>
+                            <p>Total Purchases</p>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+
+            <!-- Recent Purchases -->
+            <% if (recentPurchases && recentPurchases.length > 0) { %>
+                <div class="admin-section-block">
+                    <h2>Recent Purchases</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>User</th>
+                                <th>Event</th>
+                                <th>Tickets</th>
+                                <th>Total</th>
+                                <th>Cost</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% recentPurchases.forEach(p => { %>
+                                <tr>
+                                    <td>#<%= p.id %></td>
+                                    <td><%= p.username %></td>
+                                    <td><%= p.event_title %></td>
+                                    <td><%= p.quantity %></td>
+                                    <td>$<%= parseFloat(p.total_price).toFixed(2) %></td>
+                                    <td>$<%= parseFloat(p.purchase_cost || 0).toFixed(2) %></td>
+                                    <td><span class="status-badge status-<%= p.status %>"><%= p.status %></span></td>
+                                    <td><%= new Date(p.purchase_date).toLocaleDateString() %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                    <a href="/admin/purchases" class="btn btn-outline-primary" style="margin-top: 1rem; display: inline-block;">View All</a>
+                </div>
+            <% } %>
+
+            <!-- Flagged Comments -->
+            <% if (flaggedComments && flaggedComments.length > 0) { %>
+                <div class="admin-section-block">
+                    <h2>Flagged Comments</h2>
+                    <div class="comments-list">
+                        <% flaggedComments.forEach(comment => { %>
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <strong><%= comment.username %></strong>
+                                    <span class="text-muted">on <%= comment.event_title %></span>
+                                </div>
+                                <p class="comment-text"><%= comment.comment_text %></p>
+                                <div class="comment-actions">
+                                    <form action="/api/comments/<%= comment.id %>" method="POST" style="display:inline;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn-text text-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            <% } %>
+
+            <!-- Unread Messages -->
+            <% if (unreadMessages && unreadMessages.length > 0) { %>
+                <div class="admin-section-block">
+                    <h2>Unread Contact Messages</h2>
+                    <div class="comments-list">
+                        <% unreadMessages.forEach(msg => { %>
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <strong><%= msg.name %></strong>
+                                    <span class="text-muted"><%= msg.email %></span>
+                                    <span class="comment-date"><%= new Date(msg.created_at).toLocaleDateString() %></span>
+                                </div>
+                                <p class="comment-text"><% if (msg.subject) { %><strong><%= msg.subject %></strong>: <% } %><%= msg.message %></p>
+                            </div>
+                        <% }) %>
+                    </div>
+                    <a href="/admin/contacts" class="btn btn-outline-primary" style="margin-top: 1rem; display: inline-block;">View All</a>
+                </div>
+            <% } %>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/css/style.css" />
-  <% if (typeof NODE_ENV !== 'undefined' && NODE_ENV.includes('dev')) { %>
-  <script>
-    const host = window.location.hostname;
-    const currentPort = window.location.port;
-    const wsPort = currentPort ? (parseInt(currentPort) + 1) : 3001;
-    const ws = new WebSocket(`ws://${host}:${wsPort}`);
-    ws.onclose = () => { setTimeout(() => location.reload(), 2000); };
-  </script>
-  <% } %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title + ' - ' : '' %>Seat Master</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <% if (typeof NODE_ENV !== 'undefined' && NODE_ENV.includes('dev')) { %>
+    <script>
+        const host = window.location.hostname;
+        const currentPort = window.location.port;
+        const wsPort = currentPort ? (parseInt(currentPort) + 1) : 3001;
+        const ws = new WebSocket(`ws://${host}:${wsPort}`);
+        ws.onclose = () => { setTimeout(() => location.reload(), 2000); };
+    </script>
+    <% } %>
 </head>
 <body>

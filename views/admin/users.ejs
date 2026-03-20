@@ -2,16 +2,55 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1>Manage Users</h1>
-  <% if (users.length === 0) { %>
-    <p>No users.</p>
-  <% } else { %>
-    <ul>
-      <% users.forEach(u => { %>
-        <li><%= u.email %> (<%= u.role %>)</li>
-      <% }) %>
-    </ul>
-  <% } %>
+    <section class="page-header">
+        <div class="container">
+            <a href="/admin" class="admin-back-link">
+                <i class="fas fa-arrow-left"></i> Admin Dashboard
+            </a>
+            <h1>Manage Users</h1>
+            <p>View and manage registered users</p>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="container">
+            <% if (users.length === 0) { %>
+                <div class="no-results">
+                    <i class="fas fa-users"></i>
+                    <h3>No users found</h3>
+                </div>
+            <% } else { %>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(u => { %>
+                            <tr>
+                                <td><%= u.id %></td>
+                                <td><strong><%= u.username %></strong></td>
+                                <td><%= u.full_name %></td>
+                                <td><%= u.email %></td>
+                                <td>
+                                    <span class="status-badge status-<%= u.role %>">
+                                        <%= u.role.charAt(0).toUpperCase() + u.role.slice(1) %>
+                                    </span>
+                                </td>
+                                <td><%= u.created_at ? new Date(u.created_at).toLocaleDateString() : '—' %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

@@ -2,16 +2,55 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1>Contact Messages</h1>
-  <% if (messages.length === 0) { %>
-    <p>No messages.</p>
-  <% } else { %>
-    <ul>
-      <% messages.forEach(m => { %>
-        <li><strong><%= m.name %></strong>: <%= m.message %></li>
-      <% }) %>
-    </ul>
-  <% } %>
+    <section class="page-header">
+        <div class="container">
+            <a href="/admin" class="admin-back-link">
+                <i class="fas fa-arrow-left"></i> Admin Dashboard
+            </a>
+            <h1>Contact Messages</h1>
+            <p>View submitted contact form messages</p>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="container">
+            <% if (messages.length === 0) { %>
+                <div class="no-results">
+                    <i class="fas fa-envelope"></i>
+                    <h3>No messages yet</h3>
+                </div>
+            <% } else { %>
+                <div class="comments-list">
+                    <% messages.forEach(msg => { %>
+                        <div class="comment">
+                            <div class="comment-header">
+                                <strong><%= msg.name %></strong>
+                                <span class="text-muted"><%= msg.email %></span>
+                                <span class="comment-date"><%= new Date(msg.created_at).toLocaleDateString() %></span>
+                                <% if (!msg.is_read) { %>
+                                    <span class="status-badge status-pending">New</span>
+                                <% } %>
+                            </div>
+                            <% if (msg.subject) { %>
+                                <p><strong>Subject:</strong> <%= msg.subject %></p>
+                            <% } %>
+                            <p class="comment-text"><%= msg.message %></p>
+                            <div class="comment-actions">
+                                <% if (!msg.is_read) { %>
+                                    <form action="/admin/contacts/<%= msg.id %>/read" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn-text">Mark as Read</button>
+                                    </form>
+                                <% } %>
+                                <form action="/admin/contacts/<%= msg.id %>/delete" method="POST" style="display:inline;" onsubmit="return confirm('Delete this message?')">
+                                    <button type="submit" class="btn-text text-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

@@ -2,9 +2,19 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1>Message Sent</h1>
-  <p>Thank you for reaching out. We'll get back to you soon.</p>
-  <a href="/">Go home</a>
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-box" style="text-align: center;">
+                <i class="fas fa-check-circle" style="font-size: 3rem; color: #28a745; margin-bottom: 1rem;"></i>
+                <h1>Message Sent!</h1>
+                <p>Thank you for reaching out. We'll get back to you as soon as possible.</p>
+                <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+                    <a href="/" class="btn btn-primary">Go Home</a>
+                    <a href="/events" class="btn btn-outline-primary">Browse Events</a>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

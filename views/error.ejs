@@ -2,9 +2,22 @@
 <%- include('partials/nav') %>
 
 <main>
-  <h1>Error <%= status %></h1>
-  <p><%= message %></p>
-  <a href="/">Go home</a>
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-box" style="text-align: center;">
+                <h1 style="font-size: 4rem; color: #1a1a2e;"><%= status %></h1>
+                <h2><%= message %></h2>
+                <% if (typeof errorDetails !== 'undefined' && errorDetails) { %>
+                    <p class="text-muted" style="margin-top: 0.5rem;"><%= errorDetails %></p>
+                <% } %>
+                <div style="margin-top: 2rem;">
+                    <a href="/" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Go Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 
 <%- include('partials/footer') %>

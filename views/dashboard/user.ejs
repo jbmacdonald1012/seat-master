@@ -2,17 +2,60 @@
 <%- include('../partials/nav') %>
 
 <main>
-  <h1>My Dashboard</h1>
-  <h2>My Purchases</h2>
-  <% if (purchases.length === 0) { %>
-    <p>No purchases yet.</p>
-  <% } else { %>
-    <ul>
-      <% purchases.forEach(p => { %>
-        <li><a href="/purchases/<%= p.id %>">Purchase #<%= p.id %></a></li>
-      <% }) %>
-    </ul>
-  <% } %>
+    <section class="page-header">
+        <div class="container">
+            <h1>My Dashboard</h1>
+            <p>Welcome back, <%= user.username %>!</p>
+        </div>
+    </section>
+
+    <section class="dashboard-section">
+        <div class="container">
+            <h2>My Purchases</h2>
+
+            <% if (purchases.length === 0) { %>
+                <div class="no-results">
+                    <i class="fas fa-ticket-alt"></i>
+                    <h3>No purchases yet</h3>
+                    <p>Browse events and grab your tickets!</p>
+                    <a href="/events" class="btn btn-primary">Browse Events</a>
+                </div>
+            <% } else { %>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Event</th>
+                            <th>Date</th>
+                            <th>Tickets</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% purchases.forEach(p => { %>
+                            <tr>
+                                <td>#<%= p.id %></td>
+                                <td><%= p.event_title %></td>
+                                <td><%= new Date(p.purchase_date).toLocaleDateString() %></td>
+                                <td><%= p.quantity %></td>
+                                <td>$<%= parseFloat(p.total_price).toFixed(2) %></td>
+                                <td>
+                                    <span class="status-badge status-<%= p.status %>">
+                                        <%= p.status.charAt(0).toUpperCase() + p.status.slice(1) %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="/purchases/<%= p.id %>" class="btn btn-outline-primary" style="padding: 0.25rem 0.75rem; font-size: 0.85rem;">View</a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </section>
 </main>
 
 <%- include('../partials/footer') %>

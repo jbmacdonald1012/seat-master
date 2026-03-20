@@ -1,17 +1,41 @@
-<nav>
-  <a href="/">Seat Master</a>
-  <ul>
-    <li><a href="/events">Events</a></li>
-    <li><a href="/contact">Contact</a></li>
-    <% if (user) { %>
-      <li><a href="/dashboard">My Dashboard</a></li>
-      <% if (user.role === 'admin' || user.role === 'employee') { %>
-        <li><a href="/admin">Admin</a></li>
-      <% } %>
-      <li><a href="/auth/logout">Logout (<%= user.firstname %>)</a></li>
-    <% } else { %>
-      <li><a href="/auth/login">Login</a></li>
-      <li><a href="/auth/register">Register</a></li>
-    <% } %>
-  </ul>
+<nav class="navbar">
+    <div class="container">
+        <a href="/" class="logo">
+            <i class="fas fa-ticket-alt"></i>
+            Seat Master
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/contact">Contact</a></li>
+
+            <% if (isAuthenticated) { %>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fas fa-user"></i>
+                        <%= user.username %>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/dashboard">Dashboard</a></li>
+                        <% if (user.role === 'admin' || user.role === 'employee') { %>
+                            <li><a href="/admin">Admin Panel</a></li>
+                        <% } %>
+                        <li>
+                            <form action="/auth/logout" method="POST" style="margin: 0;">
+                                <button type="submit" class="logout-btn">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            <% } else { %>
+                <li><a href="/auth/login" class="btn btn-outline">Login</a></li>
+                <li><a href="/auth/register" class="btn btn-primary">Sign Up</a></li>
+            <% } %>
+        </ul>
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
 </nav>
