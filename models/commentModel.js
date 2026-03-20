@@ -42,6 +42,29 @@ const commentModel = {
     const result = await pool.query(query, [id]);
     return result.rows[0];
   },
+
+  async findById(id) {
+    const query = `
+      SELECT c.*, u.username, u.full_name
+      FROM comments c
+      JOIN users u ON c.user_id = u.id
+      WHERE c.id = $1
+    `;
+    const result = await pool.query(query, [id]);
+    return result.rows[0];
+  },
+
+  async getFlaggedComments() {
+    const query = `
+      SELECT c.*, u.username, u.full_name
+      FROM comments c
+      JOIN users u ON c.user_id = u.id
+      WHERE c.is_flagged = true
+      ORDER BY c.created_at DESC
+    `;
+    const result = await pool.query(query);
+    return result.rows;
+  },
 };
 
 export default commentModel;

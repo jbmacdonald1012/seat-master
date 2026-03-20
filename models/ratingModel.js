@@ -50,6 +50,24 @@ const ratingModel = {
     const result = await pool.query(query, [eventId, userId, rating]);
     return result.rows[0];
   },
+
+  async getAverageByEvent(eventId) {
+    const query = `
+      SELECT COALESCE(AVG(rating), 0) as avg_rating, COUNT(*) as count
+      FROM ratings
+      WHERE event_id = $1
+    `;
+    const result = await pool.query(query, [eventId]);
+    return result.rows[0];
+  },
+
+  async deleteByUserAndEvent(userId, eventId) {
+    const result = await pool.query(
+      'DELETE FROM ratings WHERE user_id = $1 AND event_id = $2 RETURNING id',
+      [userId, eventId]
+    );
+    return result.rows[0];
+  },
 };
 
 export default ratingModel;

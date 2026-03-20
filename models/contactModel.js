@@ -48,6 +48,12 @@ const contactModel = {
     const result = await pool.query(query, [adminResponse, id]);
     return result.rows[0];
   },
+
+  async findByStatus(status) {
+    const query = 'SELECT * FROM contact_messages WHERE status = $1 ORDER BY created_at DESC';
+    const result = await pool.query(query, [status]);
+    return result.rows;
+  },
 };
 
 export default contactModel;

@@ -72,6 +72,33 @@ const purchaseModel = {
     const result = await pool.query(query, [status, id]);
     return result.rows[0];
   },
+
+  async getStats() {
+    const query = `
+      SELECT
+        COUNT(*) as total_count,
+        COUNT(*) FILTER (WHERE status = 'completed') as completed_count,
+        COALESCE(SUM(total_price) FILTER (WHERE status = 'completed'), 0) as total_revenue
+      FROM purchases
+    `;
+    const result = await pool.query(query);
+    return result.rows[0];
+  },
+
+  async findByStatus(status) {
+    const query = `
+      SELECT p.*,
+             u.username, u.email, u.full_name,
+             e.title as event_title, e.venue_name, e.event_date
+      FROM purchases p
+      JOIN users u ON p.user_id = u.id
+      LEFT JOIN events e ON p.event_id = e.id
+      WHERE p.status = $1
+      ORDER BY p.purchase_date DESC
+    `;
+    const result = await pool.query(query, [status]);
+    return result.rows;
+  },
 };
 
 export default purchaseModel;
