@@ -145,8 +145,8 @@ INSERT INTO ratings (event_id, user_id, rating) VALUES
 (4, 4, 5);
 
 -- 8. Contact Messages
-INSERT INTO contact_messages (name, email, subject, message, status) VALUES
-('Sarah Johnson',   'sarah.j@email.com',  'Question about ticket refunds',  'Hi, I purchased tickets to an event that was postponed. What is the refund policy?',               'unread'),
-('Michael Chen',    'mchen@email.com',    'Group booking inquiry',          'I would like to purchase 20 tickets for a corporate event. Do you offer group discounts?',           'read'),
-('Emily Rodriguez', 'emily.r@email.com',  'Accessibility assistance',       'I need wheelchair accessible seating for the Hamilton show. Can you help me with this?',              'responded'),
-('David Thompson',  'dthompson@email.com','Payment issue',                  'My payment failed but I was charged. Please help!',                                                    'unread');
+INSERT INTO contact_messages (name, email, user_id, subject, message, status) VALUES
+('Sarah Johnson',   'sarah.j@email.com',  NULL, 'Question about ticket refunds',  'Hi, I purchased tickets to an event that was postponed. What is the refund policy?',               'unread'),
+('John Doe',        'john@example.com',   4,    'Group booking inquiry',          'I would like to purchase 20 tickets for a corporate event. Do you offer group discounts?',           'read'),
+('Emily Rodriguez', 'emily.r@email.com',  NULL, 'Accessibility assistance',       'I need wheelchair accessible seating for the Hamilton show. Can you help me with this?',              'responded'),
+('Jane Smith',      'jane@example.com',   5,    'Payment issue',                  'My payment failed but I was charged. Please help!',                                                    'unread');

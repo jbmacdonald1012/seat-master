@@ -137,6 +137,7 @@ CREATE TABLE contact_messages (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
     subject VARCHAR(200),
     message TEXT NOT NULL,
     status VARCHAR(20) DEFAULT 'unread' CHECK (status IN ('unread', 'read', 'responded', 'archived')),
@@ -146,4 +147,5 @@ CREATE TABLE contact_messages (
 );
 
 CREATE INDEX idx_contact_status ON contact_messages(status);
+CREATE INDEX idx_contact_user ON contact_messages(user_id);
 CREATE INDEX idx_contact_created ON contact_messages(created_at DESC);

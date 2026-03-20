@@ -28,7 +28,7 @@ const contactController = {
         });
       }
 
-      await contactModel.create({ name, email, subject, message });
+      await contactModel.create({ name, email, subject, message, user_id: req.session?.user?.id || null });
       res.redirect('/contact/success');
     } catch (error) {
       next(error);

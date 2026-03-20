@@ -25,6 +25,7 @@
                         <div class="comment">
                             <div class="comment-header">
                                 <strong><%= msg.name %></strong>
+                                <% if (msg.username) { %><span class="text-muted">(<%= msg.username %>)</span><% } %>
                                 <span class="text-muted"><%= msg.email %></span>
                                 <span class="comment-date"><%= new Date(msg.created_at).toLocaleDateString() %></span>
                                 <% if (!msg.is_read) { %>
