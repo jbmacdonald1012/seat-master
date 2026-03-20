@@ -19,8 +19,6 @@ Seat Master is designed for a small-to-medium ticketing operation that needs to 
 
 ## Database Schema
 
-> Export your ERD from pgAdmin (**Tools → ERD Tool**), save the image as `database/erd.png`, and it will display here.
-
 ![Entity Relation Diagram](database/erd.png)
 
 **Tables:** `users`, `categories`, `events`, `tickets`, `purchases`, `comments`, `ratings`, `contact_messages`
