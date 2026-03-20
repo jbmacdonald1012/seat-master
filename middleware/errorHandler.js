@@ -6,6 +6,6 @@ export default function errorHandler(err, req, res, next) {
     title: 'Error',
     message: err.message || 'Something went wrong.',
     status,
-    user: req.session.user || null,
+    user: req.session?.user || null,
   });
 }
