@@ -75,4 +75,4 @@ if (process.env.NODE_ENV.includes('dev') && process.env.ENABLE_SQL_LOGGING === '
 }
 
 export default db;
-export { caCert };
+export { pool, caCert };

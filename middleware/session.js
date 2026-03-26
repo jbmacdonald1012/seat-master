@@ -1,7 +1,16 @@
 import session from 'express-session';
+import connectPgSimple from 'connect-pg-simple';
+import { pool } from '../db.js';
 import userModel from '../models/userModel.js';
 
+const PgSession = connectPgSimple(session);
+
 const sessionMiddleware = session({
+  store: new PgSession({
+    pool,
+    tableName: 'session',
+    createTableIfMissing: true,
+  }),
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,

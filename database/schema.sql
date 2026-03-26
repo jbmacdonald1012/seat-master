@@ -2,6 +2,7 @@
 -- Run this in WebStorm DB console before seeding
 
 -- Drop all tables (reverse dependency order)
+DROP TABLE IF EXISTS "session" CASCADE;
 DROP TABLE IF EXISTS contact_messages CASCADE;
 DROP TABLE IF EXISTS ratings CASCADE;
 DROP TABLE IF EXISTS comments CASCADE;
@@ -11,7 +12,17 @@ DROP TABLE IF EXISTS events CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 
--- 1. Users
+-- 1. Sessions (managed by connect-pg-simple)
+CREATE TABLE IF NOT EXISTS "session" (
+    "sid"    VARCHAR      NOT NULL COLLATE "default",
+    "sess"   JSON         NOT NULL,
+    "expire" TIMESTAMP(6) NOT NULL,
+    PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE
+);
+
+CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON "session" ("expire");
+
+-- 2. Users
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
