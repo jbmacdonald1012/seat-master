@@ -18,6 +18,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 
+// Trust Render's reverse proxy so secure cookies work over HTTPS
+app.set('trust proxy', 1);
+
 // View engine
 app.set('view engine', 'ejs');
 app.set('views', join(__dirname, 'views'));
